@@ -8,7 +8,10 @@ import {
     USER_REGISTER_FAIL,
     USER_DETAILS_REQUEST,
     USER_DETAILS_SUCCESS,
-    USER_DETAILS_FAIL
+    USER_DETAILS_FAIL,
+    USER_UPDATE_PROFILE_REQUEST,
+    USER_UPDATE_PROFILE_SUCCESS,
+    USER_UPDATE_PROFILE_FAIL
 } from "../constants/user.js"
 import axios from 'axios'
 
@@ -42,7 +45,9 @@ export const register = (name, email, password) => async (dispatch) => {
             type: USER_REGISTER_REQUEST
         })
         const config = {
-            'Content-Type': 'application/json'
+            headers: {
+                'Content-Type': 'application/json'
+            }
         }
         const { data } = await axios.post('/api/users', { name, email, password }, config)
         dispatch({
@@ -68,7 +73,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
     try {
 
         const { userLogin: { userInfo } } = getState()
-        console.log('userInfo 11', userInfo.token)
+
         dispatch({
             type: USER_DETAILS_REQUEST
         })
@@ -86,6 +91,35 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
     } catch (error) {
         dispatch({
             type: USER_DETAILS_FAIL,
+            payload: error.response && error.response.data.message
+                ? error.response.data.message
+                : error.message
+        })
+    }
+}
+
+export const updateUserProfile = (user) => async (dispatch, getState) => {
+    try {
+
+        const { userLogin: { userInfo } } = getState()
+
+        dispatch({
+            type: USER_UPDATE_PROFILE_REQUEST
+        })
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+        const { data } = await axios.put('/api/users/profile', user, config)
+        dispatch({
+            type: USER_UPDATE_PROFILE_SUCCESS,
+            payload: data
+        })
+    } catch (error) {
+        dispatch({
+            type: USER_UPDATE_PROFILE_FAIL,
             payload: error.response && error.response.data.message
                 ? error.response.data.message
                 : error.message
