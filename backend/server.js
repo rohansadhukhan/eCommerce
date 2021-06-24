@@ -8,7 +8,7 @@ import morgan from 'morgan'
 
 import productRouter from './routes/product.js'
 import userRouter from './routes/user.js'
-// import orderRouter from './routes/order.js'
+import orderRouter from './routes/order.js'
 
 dotenv.config()
 connectDB()
@@ -24,7 +24,7 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use('/api/products', productRouter)
 app.use('/api/users', userRouter)
-// app.use('/api/orders', orderRouter)
+app.use('/api/orders', orderRouter)
 
 
 const __dirname = path.resolve()
