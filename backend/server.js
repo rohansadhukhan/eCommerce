@@ -1,12 +1,12 @@
 import dotenv from 'dotenv'
 import express from 'express'
-import connectDB from './config/db.js'
-import colors from 'colors'
-import { notFound, errorHandler } from './middlewares/errorHandler.js'
+import connectDB from './config/db'
+import { notFound, errorHandler } from './middlewares/errorHandler'
 import morgan from 'morgan'
 
-import productRouter from './routes/product.js'
-import userRouter from './routes/user.js'
+import productRouter from './routes/product'
+import userRouter from './routes/user'
+import orderRouter from './routes/order'
 
 dotenv.config()
 connectDB()
@@ -22,6 +22,7 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use('/api/products', productRouter)
 app.use('/api/users', userRouter)
+app.use('/api/orders', orderRouter)
 
 app.get('/', (req, res) => {
     res.send('hi')
