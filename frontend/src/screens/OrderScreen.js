@@ -7,7 +7,7 @@ import { Row, Col, Image, Card, ListGroup } from 'react-bootstrap'
 import Loader from '../components/Loader'
 import Message from '../components/Message.js'
 import { getOrderDetails, payOrder } from '../actions/orderAction'
-import { ORDER_PAY_FAIL, ORDER_PAY_RESET } from '../constants/order'
+import { ORDER_PAY_RESET } from '../constants/order'
 
 const OrderScreen = ({ match }) => {
 
