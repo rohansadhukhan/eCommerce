@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Button, Table, Row, Col } from 'react-bootstrap'
 import Loader from '../components/Loader.js'
 import Message from '../components/Message.js'
-import { listProducts, deleteProduct } from '../actions/productAction.js'
+import { listProducts, deleteProduct, createProduct } from '../actions/productAction.js'
+import { PRODUCT_CREATE_RESET } from '../constants/product.js'
 
 const ProductListScreen = ({ history }) => {
 
@@ -19,16 +20,24 @@ const ProductListScreen = ({ history }) => {
     const productDelete = useSelector(state => state.productDelete)
     const { loading: loadingDelete, error: errorDelete, success: successDelete } = productDelete
 
+    const productCreate = useSelector(state => state.productCreate)
+    const { loading: loadingCreate, error: errorCreate, success: successCreate, product: createdProduct } = productCreate
+
     useEffect(() => {
-        if (userInfo && userInfo.isAdmin) {
-            dispatch(listProducts())
-        } else {
+        dispatch({ type: PRODUCT_CREATE_RESET })
+        if (userInfo && !userInfo.isAdmin) {
             history.push('/login')
         }
-    }, [dispatch, history, userInfo, successDelete])
+
+        if (successCreate) {
+            history.push(`/admin/product/${createdProduct._id}/edit`)
+        } else {
+            dispatch(listProducts())
+        }
+    }, [dispatch, history, userInfo, successDelete, successCreate, createdProduct])
 
     const createProductHandler = () => {
-        
+        dispatch(createProduct())
     }
 
     const deleteHandler = (id) => {
@@ -51,6 +60,8 @@ const ProductListScreen = ({ history }) => {
             </Row>
             {loadingDelete && <Loader />}
             {errorDelete && <Message varient='danger' >{errorDelete}</Message>}
+            {loadingCreate && <Loader />}
+            {errorCreate && <Message varient='danger' >{errorCreate}</Message>}
             {loading ? (
                 <Loader />
             ) : error ? (
