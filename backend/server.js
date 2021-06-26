@@ -9,6 +9,7 @@ import morgan from 'morgan'
 import productRouter from './routes/product.js'
 import userRouter from './routes/user.js'
 import orderRouter from './routes/order.js'
+import uploadRouter from './routes/upload.js'
 
 dotenv.config()
 connectDB()
@@ -25,10 +26,14 @@ if (process.env.NODE_ENV === 'development') {
 app.use('/api/products', productRouter)
 app.use('/api/users', userRouter)
 app.use('/api/orders', orderRouter)
+app.use('/api/upload', uploadRouter)
 
 app.get('/api/config/paypal', (req, res) => res.send(process.env.PAYPAL_CLIENT_ID))
 
 const __dirname = path.resolve()
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
+
+
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '/frontend/build')))
     app.get('*', (req, res) => {
@@ -39,6 +44,7 @@ if (process.env.NODE_ENV === 'production') {
         res.send('dev server is running')
     })
 }
+
 
 app.use(notFound)
 app.use(errorHandler)
