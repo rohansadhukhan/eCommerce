@@ -97,7 +97,7 @@ const OrderScreen = ({ match }) => {
                                 {order.shippingAddress.postalCode},
                                 {order.shippingAddress.country},
                             </p>
-                            {order.isDeliverd ? <Message varient='success'>Delivered On{order.deliveredAt}</Message>
+                            {order.isDelivered ? <Message varient='success'>Delivered On{order.deliveredAt}</Message>
                                 : <Message varient='danger'>Not Delivered</Message>}
                         </ListGroup.Item>
 
