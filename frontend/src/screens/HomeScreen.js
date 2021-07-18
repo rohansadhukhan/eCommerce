@@ -2,10 +2,12 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { listProducts } from '../actions/productAction.js'
 import Product from '../components/Product'
-import { Row, Col, Pagination } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 import Paginate from '../components/Paginate.js'
 import Loader from '../components/Loader.js'
 import Message from '../components/Message.js'
+import ProductCarousel from '../components/ProductCarousel.js'
+import { Link } from 'react-router-dom'
 
 const HomeScreen = ({ match }) => {
 
@@ -23,6 +25,13 @@ const HomeScreen = ({ match }) => {
 
     return (
         <>
+            {!keyword ? (
+                <ProductCarousel />
+            ) : (
+                <Link to='/' className='btn btn-light'>
+                    Go Back
+                </Link>
+            )}
             <h1> Latest Products</h1>
             {loading
                 ? (
